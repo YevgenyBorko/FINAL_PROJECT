@@ -10,8 +10,8 @@
  Our project is meant to find those objects by filtering them by selecting parameters
  such as colors, cameras , time and display them on the clients application.
 
-*A video explainig how the project works: 
-we take some frames from the object in our case the person with the red shirt,
+*A video explaining how the project works: 
+we take some frames from the object in our case the person with the red shirt from some videos,
 and than we search for him in the app and show the results.
 link to the video:
 https://www.youtube.com/watch?v=XxTp5x6lnLU&ab_channel=BenKeidar
