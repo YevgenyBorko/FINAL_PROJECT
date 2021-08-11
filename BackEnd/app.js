@@ -33,6 +33,7 @@ app.use(express.urlencoded({
     extended: false
 }))
 
+//-------------------------------------------create socket------------------------------------------------
 const http = require('http');
 const server = http.createServer(app);
  global.io = require('socket.io')(server, {
@@ -40,7 +41,8 @@ const server = http.createServer(app);
     origin: '*',
   }
 });
-//*********************************************************************************************************/
+//----------------------------------------------------------------------------------------------------------
+
 
 //-------------------------------------------run services---------------------------------------------------
 function execute(command) {
@@ -52,10 +54,10 @@ function execute(command) {
 }
 //----------------------------------------------------------------------------------------------------------
 
-//********************************************Listener to the port*****************************************/
-global.id ;
 
-io.on("connection", (socket) => {
+global.id ;//each user's socket gets an id, so we will know where to send the data.
+
+io.on("connection", (socket) => {//connect the socket.
   id=socket.id;
   console.log("New client connected",id);
   
@@ -63,16 +65,18 @@ io.on("connection", (socket) => {
      console.log("Client disconnected");
    });
 });
+//*********************************************************************************************************/
 
-
+//********************************************Listener to the port*****************************************/
 //This section sets the cameras list and create DB collections when the server is up.
 server.listen(PORT, () => {
   console.log('server is running on port ' + PORT);
-  var expire = 60*60*24*7*12; //define for how many any meta data will be stored in the DB.
+  var expire = 60*60*24*7*12; //define for how much time any meta data will be stored in the DB.
   var x = new config()
-  x.createCamsMap(); 
+  x.createCamsMap(); //create a map of cameras data.
   camList = x.getCamsMap();
   for(i in camList){
+      //this loop creates the collections in the DB and sets an index for each one.
       if(camList[i][1] == 1){ //if isHuman
         db.createCollection(camList[i][0] + '_person', function(err, collection) {});
         db.collection(camList[i][0]+ '_person').createIndex({"timestamp":1}, {expireAfterSeconds: expire})
@@ -82,8 +86,7 @@ server.listen(PORT, () => {
         db.collection(camList[i][0]+ '_vehicle').createIndex({"timestamp":1}, {expireAfterSeconds: expire})
       } 
   }
-
-  execute('npm run consume')
+  execute('npm run consume') //runs the RabbitMQ service.
 })
 
 var api = require('./routes/api');
