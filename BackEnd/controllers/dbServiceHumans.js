@@ -1,9 +1,8 @@
 const { db } = require('../db/humanSchema');
 const Human = require('../db/humanSchema'); //include for the Human schema
 class Humans {
+    //This function is a controller that gets humans jsons and saves them into the right collection in the DB.
     async addHuman(JsonFile, coll) {
-        //console.log(JsonFile,coll)
-        console.log("IN HUMANS")
         let type = "person"
         let timestamp = Object.values(JsonFile)[2]
         let shirtColor1 = JsonFile.object.person.shirtColor1
@@ -13,7 +12,6 @@ class Humans {
         let image = JsonFile.object.person.base64Image
         let bbox = JsonFile.object.bbox
         let camera = coll.split('_')[0]
-
 
         const newHuman = new Human({
             type,
