@@ -1,7 +1,9 @@
 var http = require('http');
 var fs = require('fs');
 
+//This class is an assistat service that creates queries array.
 class webAssistant{
+    //This function gets two dates and return the difference between them in minutes.
     getDifference(from, until){
         let s = new Date(from);
         let t = new Date(until); 
@@ -9,6 +11,9 @@ class webAssistant{
         var diffMins = Math.floor((diffMs/1000)/60);
         return diffMins;   
     }
+    /*This function gets two dates and create an array of 10 dates, when the first is the begining date (from),
+    the last is the end date (until), and in the middle another 8 dates when each one is the one before 
+    him + (difference between the begining and the end in minutes  /  10).*/
     getTimesArray(from, until){
         let dif = this.getDifference(from,until);
         let t = []
@@ -22,6 +27,7 @@ class webAssistant{
         }
         return t;
     }
+    //This function gets the human properties that the user searched for and creates a humen query.
     createHumanQuery(shirtColor,pantsColor, startTime, endTime){                                                                                 
         var humanQuery = {};                                                                                
         if(shirtColor !== 'any' && pantsColor !== 'any'){humanQuery = {$and:[ {$or: [ {shirtColor1: shirtColor }, { shirtColor2: shirtColor }]},
@@ -35,6 +41,7 @@ class webAssistant{
         humanQuery.timestamp = {$gte:startTime, $lte:endTime} 
         return humanQuery;
     }
+    //This function gets the car properties that the user searched for and creates a car query.
     createCarQuery(make,model,color,carType, startTime, endTime){
         var carQuery = {};                                                                        
         if(make !== 'any'){carQuery.make = make;}                   
@@ -44,6 +51,8 @@ class webAssistant{
         carQuery.timestamp = {$gte:startTime, $lte:endTime} 
         return carQuery;
     }
+    /*This function gets all the data from the search of the user and uses the other functions of this class to
+    return an array of queries.*/
     createQueriesArray(from,until,make, model, color, carType, shirtColor, pantsColor, searchHuman, searchCar){
         let t = this.getTimesArray(from,until);
         let queries = [[],[]];
