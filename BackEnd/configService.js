@@ -1,7 +1,7 @@
 var http = require('http');
 var fs = require('fs');
 var myCams = new Map()
-
+//This class is a service that creates a map of data from the configuration json file.
 class Config{
     createCamsMap(){
         var list = require('./camList.json'); 
