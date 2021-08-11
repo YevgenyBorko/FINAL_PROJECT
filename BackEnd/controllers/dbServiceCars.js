@@ -2,11 +2,9 @@ const { Timestamp } = require('bson');
 const { db } = require('../db/carsSchema');
 const Car = require('../db/carsSchema'); //include for the Car schema
 
+//This function is a controller that gets cars jsons and saves them into the right collection in the DB.
 class Cars {
     async addCar(JsonFile, coll) {
-        console.log("IN CARS")
-        // console.log(JsonFile, coll)
-        //console.log(JsonFile.object.vehicle.make, coll)
         let type = "vehicle"
         let timestamp = Object.values(JsonFile)[2]
         let make = JsonFile.object.vehicle.make
@@ -28,7 +26,7 @@ class Cars {
             bbox,
             camera
         });
-        await db.collection(coll).insertOne(newCar); //save to the DB
+        await db.collection(coll).insertOne(newCar); //save to the DB.
         return newCar; //return the JSON object to the router.
     }
 }
