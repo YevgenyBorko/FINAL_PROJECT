@@ -1,7 +1,7 @@
 # FINAL_PROJECT
  Final Project. 
  A coop with 2 more students from HAC and a company called Qognify.
- The project was written using NodeJS on the server side and React on the client side.
+ The project was written using Node.js on the server side and React on the client side.
  The project works with mongoDB and uses rabbitMQ for message transfer.
  Also uses threads, sockets and many more...
  Main purpose of the project is to search for jsons and thumbnails from an already active
